@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<%
+
+	String[] updateSmlList = request.getParameterValues("updateSm");
+	String[] updateSmlCheck = request.getParameterValues("updateCk");
+
+	String[] updateSmli = new String[updateSmlList.length];
+	for(int i=0; i<updateSmlList.length; i++){
+		
+		updateSmli[i] = updateSmlList[i];
+
+	}
+
+%>
+
+ <%= updateSmli %>
+
+</body>
+</html>

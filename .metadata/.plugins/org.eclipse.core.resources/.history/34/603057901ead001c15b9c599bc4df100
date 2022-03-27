@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<%
+	
+	request.setCharacterEncoding("UTF-8");
+	//String[] updateSmlList = request.getParameterValues("updateSm");
+	String[] updateSmlCheck = request.getParameterValues("updateCk");
+	String[] updateTodoList = request.getParameterValues("todoList");
+	
+	for( String updateSmlL : updateSmlCheck ){
+		out.print(updateSmlL+"<br>");	
+			
+	}
+	for( String updateTodo : updateTodoList ){
+		out.print(updateTodo+"<br>");
+			
+	}
+	
+	
+	
+
+%>
+
+ 
+ 
+ 
+<%--  	<%
+		response.sendRedirect("index.jsp");
+	%> --%>
+
+</body>
+</html>

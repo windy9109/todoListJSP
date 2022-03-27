@@ -1,0 +1,67 @@
+<%@page import="org.apache.catalina.connector.OutputBuffer"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="kr.or.ddit.util.DBUtil3"%>
+<%@page import="java.util.Scanner"%>
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	
+
+</head>
+<body>
+
+ <%
+ 	request.setCharacterEncoding("UTF-8");
+ 	String todoList = request.getParameter("text"); 	
+ %>
+ 
+ 
+  <%
+	//입력 받은 정보를 저장한다.
+
+	try {
+
+		
+		Connection conn = DBUtil3.getConnection();
+			String sql="insert into TODOLIST ( T_LIST, T_STATE, T_DATE)"
+					+ " values(?,?,sysdate)";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, todoList);
+			pstmt.setString(2, "미완료");
+			
+			
+			int cnt = pstmt.executeUpdate();
+			if(cnt>0) {
+				out.print("등록성공~");
+			}else {
+				out.print("등록실패~");
+			}
+					
+			pstmt.close();
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+ 	
+ %>
+ 
+ 
+<div id="result">
+<%=todoList%>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+<%@page import="org.apache.catalina.connector.OutputBuffer"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="kr.or.ddit.util.DBUtil3"%>
+<%@page import="java.util.Scanner"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../css/main.css">
+<script src="../js/jquery-3.6.0.js"></script>
+
+<style>
+
+body{ text-align: center; }
+h1{
+    text-align: center;
+    margin-top: 100px;
+    font-family: fantasy;
+    font-size: 50px;
+    font-weight: 100;
+    color: #586883;
+}
+#smMain{
+    margin: auto;
+    text-align: center;
+}
+
+
+
+#todoList{
+    margin-right: 10px;
+display: none;
+    float: left;
+    clear: both;
+}
+
+#update0 ul{
+    border-bottom: 1px solid #dbdfe3;
+    list-style: none;
+    padding: 15px 20px;
+    margin: 0;
+    background: #fff;
+    text-align: left;
+    display: flow-root;
+    
+}
+
+.containBox ul:nth-child(2) {
+
+border-top: 2px solid #a6afb3 !important;
+
+}
+
+.containBox ul:last-child {
+border-bottom: 2px solid #a6afb3 !important;
+}
+
+input[id=text]{
+width: 420px;
+    height: 45px;
+    border: 1px solid #999;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+input[id=sendClick]{
+width: 115px;
+    height: 47px;
+    background: #495572;
+    color: #fff;
+    border: none;
+    margin-left: 5px;
+}
+
+input[id=submitCheck]{
+width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=deleteCheck]{
+    width: 285px;
+    margin-left: 10px;
+    height: 50px;
+    margin-bottom: 100px;
+    border: none;
+    background: #495572;
+    color: #fff;
+
+}
+
+input[id=choice]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+
+input[id=completion]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=cancel]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+        margin-left: 10px;
+
+}
+
+input[id=updateSm]{
+    width: 250px;
+    height: 30px;
+    border: 1px solid #c2c9d1;
+    padding-left: 10px;
+}
+
+input[id=deletchoice]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=updateCk]{
+
+    padding: 0;
+    margin: 0;
+    margin-left: 12px;
+    width: 11px;
+
+}
+
+input[id=deleteList]{
+margin-right: 10px;
+    float: left;
+    clear: both;
+}
+
+.DateTit{
+font-size: 30px;
+    letter-spacing: -2px;
+    font-family: fantasy;
+    font-style: italic;
+    margin-bottom: 15px;
+    color: #b1bccd;
+    text-align: left;
+}
+
+.containBox{
+border: 1px solid #b3bdc3;
+    padding: 50px 40px;
+    width: 500px;
+    margin: 20px auto;
+    background: #ebedf3ad;
+}
+
+ul li{
+display: initial;
+}
+
+
+
+.liList1{
+    width: 350px;
+    color: #2d323c;
+    word-wrap: break-word;
+    display: inline-block;
+}
+.liList2{
+    float: right;
+    text-align: right;
+}
+.liList2 span{
+font-size: 12px;
+}
+
+.liList2 b{
+    width: 50px;
+    display: inline-block;
+    text-align: right;
+    color: #596174;
+}
+
+.liList3{
+float: right;
+    color: #a2a9b7;
+    clear: both;
+}
+.liList4{
+display: none;
+}
+
+#deleteList{
+display: none;
+
+}
+.smMainbox{
+
+    display: inline-flex;
+
+}
+
+
+</style>
+
+<script>
+
+
+$(function() {
+	
+	
+	
+	//날짜별로 감싸기 containBox
+ 	arr2 = [];
+	uniqueArr = [];
+	$('#update0 ul .liList3').each(function() {
+		outsed = $(this).text();
+		sliceEnd = outsed.lastIndexOf("-");
+		outsedSlice = outsed.slice(0,sliceEnd);
+		
+		$(this).parent().addClass(outsedSlice);
+		$(this).text(outsedSlice);
+		
+		arr2.push(outsedSlice);
+	
+	}) 
+
+	$.each(arr2, function(i, el){
+		if($.inArray(el, uniqueArr) === -1) uniqueArr.push(el);
+	    
+	    
+	});
+
+
+	for(let i=0; i<=uniqueArr.length; i++){	
+	
+		//unqar.push( uniqueArr[i].silce(0,uniqueArr[i].lastIndexOf("-")) );
+		$('.'+uniqueArr[i]).wrapAll('<div class="containBox"></div>');	
+		
+		
+		
+	}
+	
+	$('.containBox').prepend('<div class="DateTit"></div>');
+	
+	for(let i=0; i<=uniqueArr.length; i++){
+			$('.containBox .DateTit').eq(i).text(uniqueArr[i]);
+	} 
+
+	
+	//만약 #text에 데이터가 없다면 경고
+	$('#sendClick').on('click', function() {
+		str = $('#text').val().trim().length;
+		if( str == 0){
+			alert(" 공백이거나 \n 입력값이 존재하지 않습니다. \n 다시 입력해주세요.");	
+		}else{
+			//추가성공
+			alert("TodoList에 등록되었습니다!");	
+			$('#smMain').submit();
+		}
+
+	});
+	
+	
+	
+ 	//글삭제 시작
+	$('#deleteCheck').on('click', function() {
+		
+		$('#update0 #todoList').each(function() {
+			$(this).remove();
+		})
+		
+		$('#update0 ul #deleteList').css('display','inline-block');
+		$(this).after('<input type="submit" value="삭제하기" id="deletchoice">');
+		$('#submitCheck').remove();
+		$(this).remove();
+		
+	})
+	
+
+	//삭제할 글 선택전송
+	$(document).delegate('#deletchoice','click', function() {
+
+
+		
+		//만약 선택한 글이 없을경우 경고창
+		deleteErr = 0;
+		$("input:checkbox[id='deleteList']:checked").each(function() {		
+			deleteErr++;	
+		})
+
+		if(deleteErr == 0){
+			alert("아무것도 선택하지 않았습니다.");
+		}else{
+		
+			//delete이벤트 발생시 form의 속성을 delete로 수정한다.
+			$('#update0').attr('action','delete.jsp').attr('id','delete0').attr('name','delete0');
+			 var del = document.getElementById("delete0");
+				del.submit(); 
+			
+		}
+		
+		
+	})
+	
+	
+	
+	
+	//글수정 시작
+	str2 =""
+		$('#submitCheck').on('click', function() {
+			
+			$('#update0 ul #todoList').css('display','inline-block');
+			$(this).after('<input type="button" value="선택완료" id="choice">');
+			$('#deleteCheck').remove();
+			$(this).remove();
+			$('#update0 #deleteList').each(function() {
+				$(this).remove();
+			})
+		
+		})
+
+		
+		chk_arr = [];
+	//수정할 글 선택하기
+		$(document).delegate('#choice', 'click', function() {
+			
+			//만약 선택한 글이 없을경우 경고창
+			updateErr = 0;
+			$("input:checkbox[id='todoList']:checked").each(function() {		
+				updateErr++;	
+			})
+
+			if(updateErr == 0){
+				alert("아무것도 선택하지 않았습니다.");
+			}else{
+				
+				//$(".클래스/#아이디").find('input:checked')
+				$('input:checkbox[name=todoList]:checked').each(function() {
+					//todolist내용을 저장
+					chk = $(this).next().text();
+					chk_arr.push(chk);
+					str2 += chk;
+					
+					
+					$(this).parent().children('.liList1').css('display','none');
+					$(this).parent().prepend('<input type="text" value="'+chk+'" id="updateSm" name="updateSm">');
+					$(this).parent().children('.liList2').append('<input type="checkbox" name="updateCk" id="updateCk" value="완료" > <input type="hidden" name="updateCk" id="updateCk_hidden" value="미완료" > <span>완료로 변경하기</span>');
+					
+					$(this).attr('type','hidden');
+
+					
+					//선택한 게시물의 상태가 완료라면 완료변경하기 버튼 hide 및 hidden 버튼의 value=완료로 수정
+					if($(this).next().next().children('b').text() == "완료"){
+						$(this).next().next().children('#updateCk').remove();
+						$(this).next().next().children('#updateCk_hidden').attr('value','완료');
+						$(this).next().next().children('span').remove();
+					
+					}
+					
+				})
+				
+				//선택하지않은 #update0 ul #todoList삭제
+				$('#update0 ul #todoList').css('display','none');
+				$(this).after('<input type="submit" value="수정취소" id="cancel">');			
+				$(this).after('<input type="submit" value="수정완료" id="completion">');
+				$(this).css('display','none');
+				
+				
+			}
+		
+		
+			
+			
+
+			
+		
+		})
+		
+		
+
+		
+	
+		//수정취소
+		$(document).delegate('#cancel', 'click', function() {
+			location.replace(location.href);
+			
+		})
+		
+		
+		
+		//수정완료클릭시
+		$(document).delegate('#completion','click', function() { 
+
+			
+			
+			//checkbox 완료 미완료 처리
+			//만약 체크를 했다면 바로 다음에 오는 #updateCk_hidden는 disabled한다.
+			$("input:checkbox[id='updateCk']:checked").each(function() {
+				$("input:checkbox[id='updateCk']:checked").next().attr('disabled','true');
+			})
+				
+			
+			//일정 form에 값이 없다면 경고창
+			//공백제외 값이 있다면 submit
+			updateSmlen =[];
+			$('#update0 .containBox ul #updateSm').each(function() {
+				updateSmlen.push($(this).val().trim().length)
+				
+			})
+
+			
+ 			if( updateSmlen.indexOf(0) == -1){
+				alert("수정완료!");
+
+				
+/* 				if(document.getElementById("updateCk").checked) {
+				    document.getElementById("updateCk_hidden").remove();
+				} */
+					
+				
+				 var inf = document.getElementById("update0");
+						inf.submit(); 
+				
+			}else{
+				alert("일정은 공백이거나 비워둘수없습니다");
+			} 
+	
+			
+
+
+					
+		
+		})	
+		
+
+		
+		
+		
+
+	
+})
+				
+				
+</script>
+
+</head>
+<body>
+
+<h1>Todo List</h1>
+<!-- 정보 입력받기 -->
+<form action="main.jsp" method="post" id="smMain">
+	<div class = "smMainbox">
+		<input type ="text" id="text" name="text">
+		<input type ="button" name="sendClick" id="sendClick" value ="추가하기">
+		<div class="test"></div>
+	</div>
+</form>
+
+<%
+//select
+	try {	
+		Connection conn = DBUtil3.getConnection();
+			String sql1="select T_LIST, T_STATE, TO_CHAR(T_DATE, 'YYYY-MM-DD-HH24miss')T_DATE, T_NO from TODOLIST ORDER BY T_DATE DESC";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql1);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			out.print("<form action ='update.jsp' method='post' id='update0' name='update0' >");
+		
+			while(rs.next()){
+				out.print("<ul><input type = 'checkbox' id='todoList' name='todoList' value='"+rs.getInt(4)+"' ><input type = 'checkbox' id='deleteList' name='deleteList' value='"+rs.getInt(4)+"' ><li class = 'liList1'>"+rs.getString(1)+"</li>");
+				out.print("<li class = 'liList2'><b>"+rs.getString(2)+"</b></li>");
+				out.print("<li class = 'liList3'>"+rs.getString(3)+"</li>");
+				out.print("<li class = 'liList4'>"+rs.getInt(4)+"</li></ul>");
+			
+			}
+			
+	
+			out.print("</form>");
+			out.print("<input type='button' value='수정하기' id='submitCheck'>");
+			out.print("<input type='button' value='삭제하기' id='deleteCheck'>");
+			
+			rs.close();
+			pstmt.close();
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+%>
+
+
+</body>
+</html>

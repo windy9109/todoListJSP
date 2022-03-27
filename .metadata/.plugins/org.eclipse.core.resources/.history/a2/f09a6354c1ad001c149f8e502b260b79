@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+body{ text-align: center; }
+h1{
+    text-align: center;
+    margin-top: 100px;
+    font-family: fantasy;
+    font-size: 50px;
+    font-weight: 100;
+    color: #586883;
+}
+#smMain{
+    margin: auto;
+    text-align: center;
+}
+
+
+
+#todoList{
+    margin-right: 10px;
+display: none;
+    float: left;
+    clear: both;
+}
+
+#update0 ul{
+    border-bottom: 1px solid #dbdfe3;
+    list-style: none;
+    padding: 15px 20px;
+    margin: 0;
+    background: #fff;
+    text-align: left;
+    display: flow-root;
+    
+}
+
+delete0 ul{
+    border-bottom: 1px solid #dbdfe3;
+    list-style: none;
+    padding: 15px 20px;
+    margin: 0;
+    background: #fff;
+    text-align: left;
+    display: flow-root;
+    
+}
+
+
+.containBox ul:nth-child(2) {
+
+border-top: 2px solid #a6afb3 !important;
+
+}
+
+.containBox ul:last-child {
+border-bottom: 2px solid #a6afb3 !important;
+}
+
+input[id=text]{
+width: 420px;
+    height: 45px;
+    border: 1px solid #999;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+input[id=sendClick]{
+width: 115px;
+    height: 47px;
+    background: #495572;
+    color: #fff;
+    border: none;
+    margin-left: 5px;
+}
+
+input[id=submitCheck]{
+width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=deleteCheck]{
+    width: 285px;
+    margin-left: 10px;
+    height: 50px;
+    margin-bottom: 100px;
+    border: none;
+    background: #495572;
+    color: #fff;
+
+}
+
+input[id=choice]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+
+input[id=completion]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=cancel]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+        margin-left: 10px;
+
+}
+
+input[id=updateSm]{
+    width: 250px;
+    height: 30px;
+    border: 1px solid #c2c9d1;
+    padding-left: 10px;
+}
+
+input[id=deletchoice]{
+    width: 285px;
+    height: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+    border: none;
+    background: #495572;
+    color: #fff;
+}
+
+input[id=updateCk]{
+
+    padding: 0;
+    margin: 0;
+    margin-left: 12px;
+    width: 11px;
+
+}
+
+input[id=deleteList]{
+margin-right: 10px;
+    float: left;
+    clear: both;
+}
+
+.DateTit{
+font-size: 30px;
+    letter-spacing: -2px;
+    font-family: fantasy;
+    font-style: italic;
+    margin-bottom: 15px;
+    color: #b1bccd;
+    text-align: left;
+}
+
+.containBox{
+border: 1px solid #b3bdc3;
+    padding: 50px 40px;
+    width: 500px;
+    margin: 20px auto;
+    background: #ebedf3ad;
+}
+
+ul li{
+display: initial;
+}
+
+
+
+.liList1{
+    width: 350px;
+    color: #2d323c;
+    word-wrap: break-word;
+    display: inline-block;
+}
+.liList2{
+    float: right;
+    text-align: right;
+}
+.liList2 span{
+font-size: 12px;
+}
+
+.liList2 b{
+    width: 50px;
+    display: inline-block;
+    text-align: right;
+    color: #596174;
+}
+
+.liList3{
+float: right;
+    color: #a2a9b7;
+    clear: both;
+}
+.liList4{
+display: none;
+}
+
+#deleteList{
+display: none;
+
+}
+.smMainbox{
+
+    display: inline-flex;
+
+}

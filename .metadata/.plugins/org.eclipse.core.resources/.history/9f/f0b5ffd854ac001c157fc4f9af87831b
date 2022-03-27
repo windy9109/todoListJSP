@@ -1,0 +1,183 @@
+<%@page import="org.apache.catalina.connector.OutputBuffer"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="kr.or.ddit.util.DBUtil3"%>
+<%@page import="java.util.Scanner"%>
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/main.css">
+<script src="../js/jquery-3.6.0.js"></script>
+<title>Insert title here</title>
+	
+<script>
+
+$(function() {
+
+	//만약 #text에 데이터가 없다면 경고
+	$('#sendClick').on('click', function() {
+		str = $('#text').val().trim().length;
+		if( str == 0){
+			alert(" 공백이거나 \n 입력값이 존재하지 않습니다. \n 다시 입력해주세요.");	
+		}else{
+			//추가성공
+			alert("TodoList에 등록되었습니다!");	
+			$('form').submit();
+		}
+
+	});
+
+	str2 =""
+	$('#submitCheck').on('click', function() {
+		
+		chk_arr = [];
+		$('#update0 :checkbox:checked').each(function() {
+			chk = $(this).val();
+			chk_arr.push(chk);
+			str2 += chk;
+			
+			$(this).parent().children('.liList1').remove();
+			$(this).parent().prepend('<input type="text" value="'+chk+'" id="updateSm">');
+			$(this).parent().children('.liList2').append('<input type="checkbox" name="updateCk" id="updateCk" ><span>완료 변경하기</span>');
+			$(this).remove();
+			
+		})
+		
+		
+
+		$('.result0').html(str2);
+	})
+	
+
+	
+
+	
+})
+
+
+</script>
+
+</head>
+<body>
+<h1>Todo List</h1>
+<!-- 정보 입력받기 -->
+<form action="main.jsp" method="post">
+	<input type ="text" id="text" name="text">
+	<input type ="button" name="sendClick" id="sendClick" value ="추가하기">
+
+</form>
+<div class="result0">안녕하세요</div>
+
+ <%
+ 	request.setCharacterEncoding("UTF-8");
+ 	String todoList = request.getParameter("text"); 	
+ 	String[] updateList = request.getParameterValues("todoList");
+
+ %>
+ 
+ 
+  <%
+	//입력 받은 정보를 저장한다.
+
+	try {
+
+		//insert
+		Connection conn = DBUtil3.getConnection();
+			String sql="insert into TODOLIST ( T_LIST, T_STATE, T_DATE, T_NO)"
+					+ " values(?,?,sysdate,select nvl(max(t_no),0)+1 from TODOLIST";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, todoList);
+			pstmt.setString(2, "미완료");
+			
+			
+			int cnt = pstmt.executeUpdate();
+			if(cnt>0) {
+				out.print("등록성공~");
+			}else {
+				out.print("등록실패~");
+			}
+					
+			pstmt.close();
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+  
+  
+ 	 //select
+	try {	
+		Connection conn = DBUtil3.getConnection();
+			String sql1="select T_LIST, T_STATE, T_DATE from TODOLIST";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql1);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			out.print("<form action ='main.jsp' method='post' id='update0'>");
+			while(rs.next()){
+				out.print("<ul><input type = 'checkbox' id='todoList' name='todoList' value='"+rs.getString(1)+"' checked ><li class = 'liList1'>"+rs.getString(1)+"</li>");
+				out.print("<li class = 'liList2'>"+rs.getString(2)+"</li>");
+				out.print("<li class = 'liList3'>"+rs.getString(3)+"</li></ul><br>");
+		
+			}
+			out.print("</form>");
+			out.print("<input type='submit' value='수정하기' id='submitCheck'>");
+			
+			rs.close();
+			pstmt.close();
+			conn.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+ 	 
+ 	 //update
+/*   	 try{
+  		 
+  		 Connection conn = DBUtil3.getConnection();
+  		 
+  				 
+  		for(String upList : updateList ){
+  			
+  			 String sql = "update TODOLIST set T_LIST = ?, T_STATE = ? where T_LIST = ?";
+  			 
+  			 PreparedStatement pstmt = conn.prepareStatement(sql);
+  			 
+	   		pstmt.setString(1, );
+  			 pstmt.setString(2, ); 
+  			 pstmt.setString(3, upList);
+  			 
+  		}
+ 		 
+ 		
+ 		 
+ 		 
+ 	 }catch(SQLException e){
+ 		 e.printStackTrace();
+ 	 }  */
+	
+	
+ 	
+ %>
+ 
+
+
+
+
+
+
+
+</body>
+</html>

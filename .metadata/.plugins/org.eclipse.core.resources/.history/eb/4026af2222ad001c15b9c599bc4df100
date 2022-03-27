@@ -1,0 +1,88 @@
+<%@page import="org.apache.catalina.connector.OutputBuffer"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="kr.or.ddit.util.DBUtil3"%>
+<%@page import="java.util.Scanner"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<%
+	
+	request.setCharacterEncoding("UTF-8");
+	//String[] updateSmlList = request.getParameterValues("updateSm");
+	String[] updateSmlCheck = request.getParameterValues("updateCk");
+	String[] updateTodoList = request.getParameterValues("todoList");
+	String[] updateUpdateSm = request.getParameterValues("updateSm");
+	
+	//완료상태
+	for( String updateSmlL : updateSmlCheck ){
+		out.print(updateSmlL+"<br>");	
+			
+	}
+	
+	//게시물 번호
+	for( String updateTodo : updateTodoList ){
+		out.print(updateTodo +"<br>");
+			
+	}
+	
+	//게시물내용
+	for( String updateUpdate : updateUpdateSm ){
+		out.print(updateUpdate +"<br>");
+			
+	}
+	
+	
+	
+	
+	 	 //update
+  	 try{
+ 		 
+ 		 Connection conn = DBUtil3.getConnection();
+ 				 
+ 		for(String upList : updateTodoList ){
+ 			
+ 			 String sql = "update TODOLIST set T_LIST = ?, T_STATE = ? where T_NO = ?";
+ 			 
+ 			 PreparedStatement pstmt = conn.prepareStatement(sql);
+ 			 
+	   		pstmt.setString(1, updateUpdateSm);
+ 			pstmt.setInt(2, updateSmlCheck); 
+ 			pstmt.setString(3, updateTodoList);
+ 			 
+ 			 
+ 			 
+ 		}
+		 
+		
+		 
+		 
+	 }catch(SQLException e){
+		 e.printStackTrace();
+	 }   
+  	 
+  	 
+
+%>
+
+ 
+ 
+ 
+<%--  	<%
+		response.sendRedirect("index.jsp");
+	%> --%>
+
+</body>
+</html>

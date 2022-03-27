@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../css/main.css">
+<script src="../js/jquery-3.6.0.js"></script>
+<script>
+
+$(function() {
+
+	//만약 #text에 데이터가 없다면 경고
+	$('#sendClick').on('click', function() {
+		str = $('#text').val().trim().length;
+		
+		alert(str);
+	});
+	
+	
+	//추가성공: TodoList에 등록되었습니다!
+	
+})
+
+
+</script>
+
+</head>
+<body>
+
+<h1>Todo List</h1>
+<!-- 정보 입력받기 -->
+<!-- <form action="main.jsp" method="post">-->
+	<input type ="text" id="text" name="text">
+	<input type ="button" name="sendClick" id="sendClick" value ="추가하기">
+<!-- </form> -->
+
+
+<!-- list -->
+
+</body>
+</html>
